@@ -47,6 +47,10 @@ public class Programa {
                     } catch (InterruptedException e) {
                         e.getMessage();
                     }
+                    break;
+                
+
+
             }
         } while (decisao < 6);
 
