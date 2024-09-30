@@ -1,6 +1,7 @@
 package entidades;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Paciente {
 
@@ -52,6 +53,19 @@ public class Paciente {
 
     public void adicionarPaciente(List<Paciente> lista, Paciente paciente) {
         lista.add(paciente);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Paciente paciente = (Paciente) o;
+        return Objects.equals(email, paciente.email) && Objects.equals(cpf, paciente.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, cpf);
     }
 
     @Override
