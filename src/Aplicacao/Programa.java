@@ -1,5 +1,6 @@
 package Aplicacao;
 
+import Exceções.ConsultException;
 import entidades.Consulta;
 import entidades.Paciente;
 
@@ -21,7 +22,6 @@ public class Programa {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
         int decisao;
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         do {
             System.out.println("---- SISTEMA DE GESTÃO PSICOLÓGICA ----");
             System.out.println("1. Cadastrar paciente");
@@ -55,38 +55,22 @@ public class Programa {
                     }
                     break;
                 case 2:
-                    LocalDateTime dataHoraAtual = LocalDateTime.now();
-                    boolean conflito = false;
-                    System.out.println("-----AGENDAMENTO DE CONSULTA-----");
-                    System.out.print("Digite o nome da paciente cadastrado: ");
-                    sc.next();
-                    nome = sc.nextLine();
-                    for (Paciente p: listaPaciente) {
-                        if (p.getNome().contains(nome)) {
-                            System.out.print("Digite a data da consulta: ");
-                            String stringData = sc.nextLine();
-                            LocalDateTime data = LocalDateTime.parse(stringData, fmt);
-                            if(data.isBefore(dataHoraAtual)) {
-                                System.out.println("DATA INVALIDA! SELECIONE UMA DATA FUTURA.");
-                                conflito = true;
-                            } else {
-                                for (LocalDateTime ldt : listaAgendamento) {
-                                    if (ldt.equals(data) || (data.isBefore(ldt.plusHours(1)) && data.isAfter(ldt.minusHours(1)))) {
-                                        System.out.println("CONFLITO DE AGENDA!");
-                                        conflito = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if(!conflito) {
-                                listaAgendamento.add(data);
-                                System.out.println("CONSULTA AGENDADA COM SUCESSO!");
-                            }
-                        } else {
-                            System.out.println("PACIENTE NÃO EXISTENTE NO SISTEMA!");
-                        }
+                    try {
+                        boolean conflito = false;
+                        System.out.println("-----AGENDAMENTO DE CONSULTA-----");
+                        System.out.print("Digite o nome da paciente cadastrado: ");
+                        sc.next();
+                        nome = sc.nextLine();
+                        System.out.print("Digite a data da consulta: ");
+                        String stringData = sc.nextLine();
+                        LocalDateTime data = LocalDateTime.parse(stringData, Consulta.fmt);
+                        Consulta consulta = new Consulta(listaAgendamento, listaPaciente, nome, data);
+                        listaAgendamento.add(data);
+                    } catch (ConsultException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
+
             }
         } while (decisao < 6);
 
