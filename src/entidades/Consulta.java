@@ -22,25 +22,31 @@ public class Consulta {
 
     public Consulta(Set<LocalDateTime> historicoConsulta, List<Paciente> listaPaciente, String nomePaciente, LocalDateTime data) {
         LocalDateTime dataHoraAtual = LocalDateTime.now();
+        boolean pacienteEncontrado = false;
+        for (Paciente pc : listaPaciente) {
+            if (!pc.getNome().equalsIgnoreCase(nomePaciente.trim())) {
+                pacienteEncontrado = true;
+                break;
+            }
+        }
+        if (!pacienteEncontrado) {
+            throw new ConsultException("O nome do paciente informado não consta no sistema.");
+        }
         if (data.isBefore(dataHoraAtual)) {
             throw new ConsultException("A data informada deve ser posterior á data atual");
-        } else {
+        }
+
             for (LocalDateTime agendamentosExistentes : historicoConsulta) {
                 if (agendamentosExistentes.isEqual(data)) {
                     throw new ConsultException("A data informada já consta agendada no sistema");
                 }
             }
-        }
             for (LocalDateTime agendamentosExistentes : historicoConsulta) {
                 if (data.isBefore(agendamentosExistentes.plusHours(1)) && data.isAfter(agendamentosExistentes.minusHours(1))) {
                     throw new ConsultException("É obrigatório agendar uma hora de diferença entre as consultas.");
                 }
             }
-            for (Paciente pc : listaPaciente) {
-                if (!pc.getNome().contains(nomePaciente)) {
-                    throw new ConsultException("O nome do paciente informado não consta no sistema.");
-                }
-            }
+
         this.paciente = paciente;
         this.data = data;
         this.nomePaciente = nomePaciente;

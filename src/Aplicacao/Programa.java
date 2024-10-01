@@ -56,7 +56,6 @@ public class Programa {
                     break;
                 case 2:
                     try {
-                        boolean conflito = false;
                         System.out.println("-----AGENDAMENTO DE CONSULTA-----");
                         System.out.print("Digite o nome da paciente cadastrado: ");
                         sc.next();
