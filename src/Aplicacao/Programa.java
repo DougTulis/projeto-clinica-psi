@@ -22,7 +22,7 @@ public class Programa {
             System.out.println("1. Cadastrar paciente");
             System.out.println("2. Agendar consulta");
             System.out.println("3. Ver histórico de consultas");
-            System.out.println("5. Sair");
+            System.out.println("4. Sair");
             System.out.print("Escolha uma opção: ");
             decisao = sc.nextInt();
             sc.nextLine();
@@ -43,7 +43,7 @@ public class Programa {
                     System.out.println("PACIENTE CADASTRADO COM SUCESSO NO SISTEMA!");
                     System.out.println("Retornando ao menu principal...");
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.getMessage();
                     }
@@ -69,7 +69,16 @@ public class Programa {
                         System.out.println("Data agendada: " + c.getData());
                         System.out.println("================================");
                     }
+                case 4:
+                    try {
+                        System.out.println("Saindo do sistema. Obrigado por utilizar o software de gestão de consulta psicológica!");
+                        Thread.sleep(3000);
+                        System.exit(0);
+                    } catch (InterruptedException e) {
+                        e.getMessage();
+                    }
             }
         } while (decisao < 6);
+        sc.close();
     }
 }
