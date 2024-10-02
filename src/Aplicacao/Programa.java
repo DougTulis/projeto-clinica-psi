@@ -4,20 +4,15 @@ import Exceções.ConsultException;
 import entidades.Consulta;
 import entidades.Paciente;
 
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Programa {
     public static void main(String[] args)  {
 
         List<Paciente> listaPaciente = new ArrayList<>();
-        Set<LocalDateTime> listaAgendamento = new HashSet<>();
+        Set<LocalDateTime> listaDataAgenda = new HashSet<>();
+        Set<Consulta> listaConsulta = new HashSet<>();
 
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
@@ -27,7 +22,6 @@ public class Programa {
             System.out.println("1. Cadastrar paciente");
             System.out.println("2. Agendar consulta");
             System.out.println("3. Ver histórico de consultas");
-            System.out.println("4. Gerenciar pagamentos");
             System.out.println("5. Sair");
             System.out.print("Escolha uma opção: ");
             decisao = sc.nextInt();
@@ -49,7 +43,7 @@ public class Programa {
                     System.out.println("PACIENTE CADASTRADO COM SUCESSO NO SISTEMA!");
                     System.out.println("Retornando ao menu principal...");
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.getMessage();
                     }
@@ -58,20 +52,24 @@ public class Programa {
                     try {
                         System.out.println("-----AGENDAMENTO DE CONSULTA-----");
                         System.out.print("Digite o nome da paciente cadastrado: ");
-                        sc.next();
                         nome = sc.nextLine();
                         System.out.print("Digite a data da consulta: ");
                         String stringData = sc.nextLine();
                         LocalDateTime data = LocalDateTime.parse(stringData, Consulta.fmt);
-                        Consulta consulta = new Consulta(listaAgendamento, listaPaciente, nome, data);
-                        listaAgendamento.add(data);
+                        Consulta consulta = new Consulta(listaDataAgenda, listaPaciente, nome, data);
+                        listaConsulta.add(consulta);
                     } catch (ConsultException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
-
+                case 3:
+                    System.out.println("-----HISTORICO DE CONSULTAS-----");
+                    for (Consulta c: listaConsulta) {
+                        System.out.println("Nome: " + c.getNomePaciente());
+                        System.out.println("Data agendada: " + c.getData());
+                        System.out.println("================================");
+                    }
             }
         } while (decisao < 6);
-
     }
 }

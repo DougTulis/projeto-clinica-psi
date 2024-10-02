@@ -24,7 +24,7 @@ public class Consulta {
         LocalDateTime dataHoraAtual = LocalDateTime.now();
         boolean pacienteEncontrado = false;
         for (Paciente pc : listaPaciente) {
-            if (!pc.getNome().equalsIgnoreCase(nomePaciente.trim())) {
+            if (pc.getNome().equalsIgnoreCase(nomePaciente.trim())) {
                 pacienteEncontrado = true;
                 break;
             }
